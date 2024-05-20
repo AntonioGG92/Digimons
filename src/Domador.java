@@ -71,4 +71,12 @@ public class Domador {
             digimon.mostrarEstado();
         }
     }
+
+    /**
+     * Obtiene el equipo de Digimon del domador.
+     * @return La lista de Digimon que conforman el equipo del domador.
+     */
+    public List<Digimon> getEquipo() {
+        return equipo;
+    }
 }
