@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ClassDiagram name="Digimon">
+  <ClassDiagramComponents>
+    <Class name="Main" package="com.mycompany.digimon" visibility="public" xPosition="20.0" yPosition="20.0">
+      <Fields/>
+      <Constructors/>
+      <Methods>
+        <Method name="main" returnType="void" visibility="public" isStatic="true">
+          <Argument type="String[]" name="args"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Digimon" package="com.mycompany.digimon" visibility="public" xPosition="320.0" yPosition="20.0">
+      <Fields>
+        <Field name="nombre" type="String" visibility="private" isFinal="true"/>
+        <Field name="nivel" type="int" visibility="private" isFinal="true"/>
+        <Field name="puntosAtaque" type="int" visibility="private" isFinal="true"/>
+        <Field name="salud" type="int" visibility="private"/>
+        <Field name="dp1" type="int" visibility="private"/>
+        <Field name="dp2" type="int" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="String" name="nombre"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getNombre" returnType="String" visibility="public"/>
+        <Method name="getSalud" returnType="int" visibility="public"/>
+        <Method name="ataque1" returnType="void" visibility="public">
+          <Argument type="Digimon" name="objetivo"/>
+        </Method>
+        <Method name="ataque2" returnType="void" visibility="public">
+          <Argument type="Digimon" name="objetivo"/>
+        </Method>
+      </Methods>
+    </Class>
+  </ClassDiagramComponents>
+  <ClassDiagramRelations>
+    <UseRelation source="com.mycompany.digimon.Digimon" target="com.mycompany.digimon.Digimon" sourceCardinality="1..1" targetCardinality="1..1"/>
+  </ClassDiagramRelations>
+</ClassDiagram>
