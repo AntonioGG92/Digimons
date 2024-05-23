@@ -1,93 +1,110 @@
 import java.util.Random;
 
+/**
+ * Clase que representa un Digimon.
+ */
 public class Digimon {
-    private String nombre;
-    private int nivel;
-    private int puntosAtaque;
-    private int salud;
-    private int experiencia;
-    private int dp1;
-    private int dp2;
+	private String nombre;
+	private int nivel;
+	private int puntosAtaque;
+	private int salud;
+	private int dp1;
+	private int dp2;
 
-    public Digimon(String nombre) {
-        this.nombre = nombre;
-        this.nivel = (int) (Math.random() * 5) + 1;
-        this.puntosAtaque = 5 * nivel;
-        this.salud = 10 * nivel;
-        this.experiencia = 0;
-        this.dp1 = 10;
-        this.dp2 = 10;
-    }
+	/**
+	 * Constructor para la clase Digimon.
+	 * @param nombre Nombre del Digimon.
+	 */
+	public Digimon(String nombre) {
+		this.nombre = nombre;
+		this.nivel = new Random().nextInt(5) + 1;
+		this.puntosAtaque = this.nivel * 5;
+		this.salud = this.nivel * 10;
+		this.dp1 = 10;
+		this.dp2 = 10;
+	}
 
-    public String getNombre() {
-        return nombre;
-    }
+	/**
+	 * Constructor para la clase Digimon con atributos personalizados.
+	 * @param nombre Nombre del Digimon.
+	 * @param nivel Nivel del Digimon.
+	 * @param puntosAtaque Puntos de ataque del Digimon.
+	 * @param salud Salud del Digimon.
+	 * @param dp1 Puntos de acción disponibles 1 del Digimon.
+	 * @param dp2 Puntos de acción disponibles 2 del Digimon.
+	 */
+	public Digimon(String nombre, int nivel, int puntosAtaque, int salud, int dp1, int dp2) {
+		this.nombre = nombre;
+		this.nivel = nivel;
+		this.puntosAtaque = puntosAtaque;
+		this.salud = salud;
+		this.dp1 = dp1;
+		this.dp2 = dp2;
+	}
 
-    public int getNivel() {
-        return nivel;
-    }
+	public String getNombre() {
+		return nombre;
+	}
 
-    public int getSalud() {
-        return salud;
-    }
+	public int getNivel() {
+		return nivel;
+	}
 
-    public int getExperiencia() {
-        return experiencia;
-    }
+	public int getPuntosAtaque() {
+		return puntosAtaque;
+	}
 
-    public void reducirSalud(int daño) {
-        this.salud -= daño;
-        System.out.println(nombre + " recibe " + daño + " puntos de daño.");
-        if (salud <= 0) {
-            System.out.println(nombre + " ha sido derrotado.");
-        }
-    }
+	public int getSalud() {
+		return salud;
+	}
 
-    public void incrementarExperiencia(int exp) {
-        this.experiencia += exp;
-        System.out.println(nombre + " gana " + exp + " puntos de experiencia.");
-        if (experiencia >= 100) {
-            subirNivel();
-        }
-    }
+	public int getDP1() {
+		return dp1;
+	}
 
-    public int ataque1() {
-        if (dp1 > 0) {
-            dp1--;
-            System.out.println(nombre + " usa Ataque 1 y causa " + puntosAtaque + " puntos de daño.");
-            return puntosAtaque;
-        } else {
-            System.out.println(nombre + " no tiene suficientes DP1 para usar Ataque 1.");
-            return 0;
-        }
-    }
+	public int getDP2() {
+		return dp2;
+	}
 
-    public int ataque2() {
-        if (dp2 > 1) {
-            dp2 -= 2;
-            System.out.println(nombre + " usa Ataque 2 y causa " + (2 * puntosAtaque) + " puntos de daño.");
-            return 2 * puntosAtaque;
-        } else {
-            System.out.println(nombre + " no tiene suficientes DP2 para usar Ataque 2.");
-            return 0;
-        }
-    }
+	public void mostrarEstado() {
+		System.out.println("Nombre: " + nombre);
+		System.out.println("Nivel: " + nivel);
+		System.out.println("Puntos de Ataque: " + puntosAtaque);
+		System.out.println("Salud: " + salud);
+		System.out.println("DP1: " + dp1);
+		System.out.println("DP2: " + dp2);
+	}
 
-    private void subirNivel() {
-        System.out.println(nombre + " ha subido de nivel!");
-        nivel++;
-        puntosAtaque = 5 * nivel;
-        salud = 10 * nivel;
-        experiencia = 0;
-    }
+	public void recibirAtaque(int dano) {
+		salud -= dano;
+		if (salud < 0) {
+			salud = 0;
+		}
+	}
 
-    public void mostrarEstado() {
-        System.out.println("Nombre: " + nombre);
-        System.out.println("Nivel: " + nivel);
-        System.out.println("Puntos de Ataque: " + puntosAtaque);
-        System.out.println("Salud: " + salud);
-        System.out.println("Experiencia: " + experiencia);
-        System.out.println("DP1: " + dp1);
-        System.out.println("DP2: " + dp2);
-    }
+	public void atacar(Digimon enemigo) {
+		if (dp1 > 0) {
+			System.out.println(nombre + " ataca a " + enemigo.getNombre() + " con un ataque común.");
+			enemigo.recibirAtaque(puntosAtaque);
+			dp1--;
+			System.out.println("Causó " + puntosAtaque + " puntos de daño.");
+			System.out.println("Salud de " + enemigo.getNombre() + " ahora es " + enemigo.getSalud());
+			System.out.println("DP1 restante: " + dp1);
+		} else {
+			System.out.println(nombre + " no tiene suficientes DP para realizar el ataque común.");
+		}
+	}
+
+	public void ataqueEspecial(Digimon enemigo) {
+		if (dp2 >= 2) {
+			System.out.println(nombre + " usa un ataque especial en " + enemigo.getNombre() + ".");
+			enemigo.recibirAtaque(2 * puntosAtaque);
+			dp2 -= 2;
+			System.out.println("Causó " + (2 * puntosAtaque) + " puntos de daño.");
+			System.out.println("Salud de " + enemigo.getNombre() + " ahora es " + enemigo.getSalud());
+			System.out.println("DP2 restante: " + dp2);
+		} else {
+			System.out.println(nombre + " no tiene suficientes DP para realizar el ataque especial.");
+		}
+	}
 }
