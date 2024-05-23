@@ -3,16 +3,9 @@ import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
-/**
- * Clase que representa una batalla digital entre Digimon.
- */
 public class Batalla_Digital {
     private List<Digimon> digimonEnemigos;
 
-    /**
-     * Constructor para la clase BatallaDigital.
-     * Genera una lista de Digimon enemigos aleatorios.
-     */
     public Batalla_Digital() {
         digimonEnemigos = new ArrayList<>();
         generarEnemigos();
@@ -22,9 +15,6 @@ public class Batalla_Digital {
         }
     }
 
-    /**
-     * Genera una lista de Digimon enemigos aleatorios.
-     */
     private void generarEnemigos() {
         String[] nombresDigimon = {"Agumon", "Gabumon", "Patamon"};
         int cantidadEnemigos = new Random().nextInt(3) + 1; // Genera entre 1 y 3 enemigos
@@ -35,10 +25,6 @@ public class Batalla_Digital {
         }
     }
 
-    /**
-     * Inicia una batalla entre el equipo del domador y los Digimon enemigos.
-     * @param domador El domador que participa en la batalla.
-     */
     public void iniciarBatalla(Domador domador) {
         Scanner scanner = new Scanner(System.in);
         boolean continuarJugando = true;
@@ -69,11 +55,6 @@ public class Batalla_Digital {
         }
     }
 
-    /**
-     * Realiza una pelea entre el Digimon del domador y los Digimon enemigos.
-     * @param domador El domador que participa en la batalla.
-     * @param digimon El Digimon del domador que participa en la batalla.
-     */
     public void pelea(Domador domador, Digimon digimon) {
         Scanner scanner = new Scanner(System.in);
         while (digimon.getSalud() > 0 && hayEnemigosVivos()) {
@@ -84,22 +65,18 @@ public class Batalla_Digital {
             int opcion = scanner.nextInt();
 
             if (opcion == 1) {
+                Digimon objetivo = elegirObjetivo();
                 int daño = digimon.ataque1();
-                if (hayEnemigosVivos()) {
-                    for (Digimon enemigo : digimonEnemigos) {
-                        if (enemigo.getSalud() > 0) {
-                            enemigo.reducirSalud(daño);
-                        }
-                    }
+                if (objetivo != null) {
+                    objetivo.reducirSalud(daño);
+                    System.out.println(objetivo.getNombre() + " recibe " + daño + " puntos de daño.");
                 }
             } else if (opcion == 2) {
+                Digimon objetivo = elegirObjetivo();
                 int daño = digimon.ataque2();
-                if (hayEnemigosVivos()) {
-                    for (Digimon enemigo : digimonEnemigos) {
-                        if (enemigo.getSalud() > 0) {
-                            enemigo.reducirSalud(daño);
-                        }
-                    }
+                if (objetivo != null) {
+                    objetivo.reducirSalud(daño);
+                    System.out.println(objetivo.getNombre() + " recibe " + daño + " puntos de daño.");
                 }
             } else if (opcion == 3) {
                 if (domador.capturar(digimonEnemigos.get(0))) {
@@ -111,6 +88,7 @@ public class Batalla_Digital {
                 if (enemigo.getSalud() > 0) {
                     int dañoEnemigo = enemigo.ataque1();
                     digimon.reducirSalud(dañoEnemigo);
+                    System.out.println(digimon.getNombre() + " recibe " + dañoEnemigo + " puntos de daño.");
                 }
             }
 
@@ -129,10 +107,21 @@ public class Batalla_Digital {
         }
     }
 
-    /**
-     * Verifica si todavía hay enemigos vivos en la batalla.
-     * @return true si hay al menos un enemigo vivo, false en caso contrario.
-     */
+    private Digimon elegirObjetivo() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Elige el número del Digimon objetivo:");
+        for (int i = 0; i < digimonEnemigos.size(); i++) {
+            System.out.println((i + 1) + ". " + digimonEnemigos.get(i).getNombre());
+        }
+        int opcion = scanner.nextInt();
+        if (opcion >= 1 && opcion <= digimonEnemigos.size()) {
+            return digimonEnemigos.get(opcion - 1);
+        } else {
+            System.out.println("Opción inválida. Atacando al primer enemigo.");
+            return digimonEnemigos.get(0);
+        }
+    }
+
     private boolean hayEnemigosVivos() {
         for (Digimon enemigo : digimonEnemigos) {
             if (enemigo.getSalud() > 0) {
